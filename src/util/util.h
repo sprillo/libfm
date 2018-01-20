@@ -47,6 +47,8 @@ namespace std {
 
 #include <math.h>
 
+double sign(double d) {return d > 0 ? 1.0 : -1.0;}
+
 double sqr(double d) { return d*d; }
 
 double sigmoid(double d) { return (double)1.0/(1.0+exp(-d)); }

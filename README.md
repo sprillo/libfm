@@ -1,3 +1,9 @@
+This fork illustrates how to implement an extension of 2-way Factorization Machines to (approximately) model interactions of order d (ideally 1 < d < 3) as per the paper [An Elementary View on Factorization Machines](https://dl.acm.org/citation.cfm?id=3109892).
+
+This is supported only for training with (vanilla) SGD. To use, just pass the desired order to the option -order, which by default is equal to 2.0.
+
+Please note that this implementation serves illustrative purposes only. It contains the minimal number of modifications needed to get the variant running, but is slow due to the use of the pow function. You can tailor the code to your needs and use the sqrt function instead for some specific values of d, such as d = 1.25, 1.5, 1.75 and so on, which greatly speeds up the computations.
+
 libFM
 =====
 

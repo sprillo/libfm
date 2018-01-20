@@ -58,7 +58,7 @@ class fm_learn_sgd_element: public fm_learn_sgd {
 					} else if (task == 1) {
 						mult = -train.target(train.data->getRowIndex())*(1.0-1.0/(1.0+exp(-train.target(train.data->getRowIndex())*p)));
 					}				
-					SGD(train.data->getRow(), mult, sum);					
+					SGD(train.data->getRow(), mult, sum, sum_sqr);
 				}				
 				iteration_time = (getusertime() - iteration_time);
 				double rmse_train = evaluate(train);

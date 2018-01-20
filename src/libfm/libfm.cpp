@@ -80,6 +80,7 @@ int main(int argc, char **argv) {
 		const std::string param_val_file	= cmdline.registerParameter("validation", "filename for validation data (only for SGDA)");
 		const std::string param_out		= cmdline.registerParameter("out", "filename for output");
 
+		const std::string param_order	= cmdline.registerParameter("order", "FM order; default=2.0");
 		const std::string param_dim		= cmdline.registerParameter("dim", "'k0,k1,k2': k0=use bias, k1=use 1-way interactions, k2=dim of 2-way interactions; default=1,1,8");
 		const std::string param_regular		= cmdline.registerParameter("regular", "'r0,r1,r2' for SGD and ALS: r0=bias regularization, r1=1-way regularization, r2=2-way regularization");
 		const std::string param_init_stdev	= cmdline.registerParameter("init_stdev", "stdev for initialization of 2-way factors; default=0.1");
@@ -117,6 +118,7 @@ int main(int argc, char **argv) {
 
 		if (! cmdline.hasParameter(param_method)) { cmdline.setValue(param_method, "mcmc"); }
 		if (! cmdline.hasParameter(param_init_stdev)) { cmdline.setValue(param_init_stdev, "0.1"); }
+		if (! cmdline.hasParameter(param_order)) { cmdline.setValue(param_order, "2.0"); }
 		if (! cmdline.hasParameter(param_dim)) { cmdline.setValue(param_dim, "1,1,8"); }
 
 		// Check for invalid flags.
@@ -245,6 +247,7 @@ int main(int argc, char **argv) {
 		// (2) Setup the factorization machine
 		fm_model fm;
 		{
+			fm.order = cmdline.getValue(param_order, 2.0);
 			fm.num_attribute = num_all_attribute;
 			fm.init_stdev = cmdline.getValue(param_init_stdev, 0.1);
 			// set the number of dimensions in the factorization

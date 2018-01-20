@@ -57,8 +57,8 @@ class fm_learn_sgd: public fm_learn {
 			std::cout.flush();
 		}
 
-		void SGD(sparse_row<DATA_FLOAT> &x, const double multiplier, DVector<double> &sum) {
-			fm_SGD(fm, learn_rate, x, multiplier, sum); 
+		void SGD(sparse_row<DATA_FLOAT> &x, const double multiplier, DVector<double> &sum, DVector<double> &sum_sqr) {
+			fm_SGD(fm, learn_rate, x, multiplier, sum, sum_sqr);
 		} 
 		
 		void debug() {

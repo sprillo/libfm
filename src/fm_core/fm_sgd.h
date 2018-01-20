@@ -30,7 +30,7 @@
 
 #include "fm_model.h"
 
-void fm_SGD(fm_model* fm, const double& learn_rate, sparse_row<DATA_FLOAT> &x, const double multiplier, DVector<double> &sum) {
+void fm_SGD(fm_model* fm, const double& learn_rate, sparse_row<DATA_FLOAT> &x, const double multiplier, DVector<double> &sum, DVector<double> &sum_sqr) {
 	if (fm->k0) {
 		double& w0 = fm->w0;
 		w0 -= learn_rate * (multiplier + fm->reg0 * w0);
@@ -42,9 +42,11 @@ void fm_SGD(fm_model* fm, const double& learn_rate, sparse_row<DATA_FLOAT> &x, c
 		}
 	}	
 	for (int f = 0; f < fm->num_factor; f++) {
+		double cache1 = sign(sum(f)) * pow(fabs(sum(f)),fm->order - 1.0);
+		double cache2 = pow(sum_sqr(f),(fm->order - 2.0)/2.0);
 		for (uint i = 0; i < x.size; i++) {
 			double& v = fm->v(f,x.data[i].id);
-			double grad = sum(f) * x.data[i].value - v * x.data[i].value * x.data[i].value; 
+			double grad = fm->order / 2.0 * x.data[i].value * cache1 - fm->order / 2.0 * v * x.data[i].value * x.data[i].value * cache2;
 			v -= learn_rate * (multiplier * grad + fm->regv * v);
 		}
 	}	

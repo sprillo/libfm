@@ -45,6 +45,8 @@ class fm_model {
 		// the following values should be set:
 		uint num_attribute;
 		
+		double order;
+		
 		bool k0, k1;
 		int num_factor;
 		
@@ -69,6 +71,7 @@ class fm_model {
 
 
 fm_model::fm_model() {
+	order = 2.0;
 	num_factor = 0;
 	init_mean = 0;
 	init_stdev = 0.01;
@@ -81,6 +84,7 @@ fm_model::fm_model() {
 
 void fm_model::debug() {
 	std::cout << "num_attributes=" << num_attribute << std::endl;
+	std::cout << "order=" << order << std::endl;
 	std::cout << "use w0=" << k0 << std::endl;
 	std::cout << "use w1=" << k1 << std::endl;
 	std::cout << "dim v =" << num_factor << std::endl;
@@ -123,7 +127,7 @@ double fm_model::predict(sparse_row<FM_FLOAT>& x, DVector<double> &sum, DVector<
 			sum(f) += d;
 			sum_sqr(f) += d*d;
 		}
-		result += 0.5 * (sum(f)*sum(f) - sum_sqr(f));
+		result += 0.5 * (pow(fabs(sum(f)),order) - pow(sum_sqr(f),order / 2.0));
 	}
 	return result;
 }
